@@ -1,4 +1,4 @@
-package tp.http;
+package Commun;
 
 public class Erreur extends Exception{
     private int codeErreur;
