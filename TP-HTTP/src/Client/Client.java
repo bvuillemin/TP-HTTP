@@ -1,38 +1,36 @@
-package Serveur;
+package Client;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Serveur {
-    private int nombreConnexion;
+public class Client {
     private int portEcoute;
     private ServerSocket socket;
-    private boolean fonctionnementServeur;
+    private boolean fonctionnementClient;
     
-    public Serveur() throws ErreurServeur{
+    public Client() throws ErreurClient{
         this.portEcoute = 80;
-        this.nombreConnexion = 5;
-        this.fonctionnementServeur = true;
+        this.fonctionnementClient = true;
         try {
             this.socket = new ServerSocket(80, 5);
         } catch (IOException ex) {
-            throw new ErreurServeur();
+            throw new ErreurClient();
         }
     }
     
-    public void accept() throws ErreurServeur{
+    public void accept() throws ErreurClient{
         Socket connexion = null;
         try {
-            ServerSocket serveur = new ServerSocket(0);
+            ServerSocket client = new ServerSocket(0);
             
-            while(this.fonctionnementServeur){
-                connexion = serveur.accept();
+            while(this.fonctionnementClient){
+                connexion = client.accept();
                 
             }
         } 
         catch (IOException ex) {
-            throw new ErreurServeur();
+            throw new ErreurClient();
         }
         finally{
             try{
@@ -40,7 +38,7 @@ public class Serveur {
                     connexion.close();
             }
             catch(IOException ex){
-                throw new ErreurServeur();
+                throw new ErreurClient();
             }
         }
         
