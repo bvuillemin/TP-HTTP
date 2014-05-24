@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 
-public class Communication {
+public abstract class Communication {
     protected InputStream in;
     protected OutputStream out;
     private InetAddress adresseIP;
@@ -19,7 +19,7 @@ public class Communication {
         String res = "GET " + url + " " + method;
         return res;
     }
-
+    
     public InputStream getIn() {
         return in;
     }

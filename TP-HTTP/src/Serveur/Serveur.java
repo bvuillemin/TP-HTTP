@@ -7,28 +7,35 @@ import java.net.Socket;
 public class Serveur {
     private int nombreConnexion;
     private int portEcoute;
-    private ServerSocket socket;
     private boolean fonctionnementServeur;
+    
+    private ServerSocket socket;
     
     public Serveur() throws ErreurServeur{
         this.portEcoute = 80;
-        this.nombreConnexion = 5;
-        this.fonctionnementServeur = true;
+        this.nombreConnexion = 4;
         try {
             this.socket = new ServerSocket(80, 5);
         } catch (IOException ex) {
             throw new ErreurServeur();
         }
     }
+
+    public void setSocket(ServerSocket socket) {
+        this.socket = socket;
+    }
+
+    public ServerSocket getSocket() {
+        return socket;
+    }
     
     public void accept() throws ErreurServeur{
         Socket connexion = null;
         try {
-            ServerSocket serveur = new ServerSocket(0);
-            
             while(this.fonctionnementServeur){
-                connexion = serveur.accept();
-                
+                connexion = socket.accept();
+                CommunicationServeur com = new CommunicationServeur(connexion.getInetAddress(),connexion.getPort());
+                com.run();
             }
         } 
         catch (IOException ex) {
@@ -43,8 +50,5 @@ public class Serveur {
                 throw new ErreurServeur();
             }
         }
-        
     }
-    
-    
 }

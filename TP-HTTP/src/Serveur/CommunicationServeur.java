@@ -5,17 +5,20 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class CommunicationServeur extends Communication{
+public class CommunicationServeur extends Communication implements Runnable{
     
-    private Serveur serveur;
-    
-    public CommunicationServeur(InetAddress _ip, int _port) throws ErreurServeur {
-        super(_ip, _port);
-        serveur=new Serveur();
+    public CommunicationServeur(InetAddress _ip, int _port) throws ErreurServeur{
+        super(_ip, _port);        
     }
     
     public void comServeur(Socket connexion) throws IOException{
         this.in = connexion.getInputStream();
+    }
+    
+    
+    
+    @Override
+    public void run() {
         
     }
 }
