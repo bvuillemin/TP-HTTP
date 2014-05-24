@@ -8,7 +8,7 @@ public class MainServeur {
             serveur.accept();
             
         } catch (ErreurServeur ex) {
-            System.out.println("Erreur serveur");
+            System.out.println("Erreur serveur: " + ex.getMessage());
         }
     }
 }

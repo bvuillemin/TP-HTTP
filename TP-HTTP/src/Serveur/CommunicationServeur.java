@@ -1,6 +1,7 @@
 package Serveur;
 
 import Commun.Communication;
+import Commun.Erreur;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -12,13 +13,13 @@ public class CommunicationServeur extends Communication implements Runnable{
     
     private Socket s;
     
-    public CommunicationServeur(Socket s1) throws ErreurServeur{
+    public CommunicationServeur(Socket s1) throws ErreurServeur, Erreur{
         super(s1.getInetAddress(), s1.getPort());        
         this.s = s1;
     }
     
     public void comServeur() throws IOException{
-        byte[] b = null;
+        byte[] b = new byte[2048];
         this.in = this.s.getInputStream();
         this.in.read(b);
         System.out.println("Serveur: message reçu");
@@ -30,7 +31,7 @@ public class CommunicationServeur extends Communication implements Runnable{
         try {
             this.comServeur();
         } catch (IOException ex) {
-            System.out.println("Serveur: erreur cmmunication");
+            System.out.println("Erreur communication");
         }
     }
 }

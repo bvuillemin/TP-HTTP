@@ -2,36 +2,28 @@ package Client;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class MainClient{
-    public static void main(String[] args) {
-        Navigateur fenetre = new Navigateur();
+public class MainClient {
+
+    /**
+     * Main du client, va demander une URL et la traiter
+     * @param args 
+     */
+    public static void main(String[] args){
+        //Navigateur fenetre = new Navigateur();
         try {
             System.out.println("Démarrage client");
-            lancerNavigateur (InetAddress.getLocalHost(),new URL("http://wwww.google.fr/"));
+            Client c = new Client(InetAddress.getLocalHost(), 1086);
+            c.lancerRequete(new URL("http://wwww.google.fr/"));
+        } catch (ErreurClient er) {
+            System.out.println("Client: " + er.getMessage());
         } catch (Exception ex) {
-            System.out.println("Erreur client: " + ex.getMessage());
-        }       
-    }
-    
-    public static void lancerNavigateur(InetAddress ip, URL url) throws ErreurClient{
-        CommunicationClient com = new CommunicationClient(ip,80);
-        String requete = com.requeteGET(url.getFile(), "HTTP/1.1");
-        if ("".equals(requete)){
-            requete="/";
-        }
-        System.out.println("Client: " + requete);
-        try {
-            com.getOut().write(requete.getBytes());
-            com.getOut().flush();
-        } catch (IOException ex) {
-            throw new ErreurClient("Erreur dans l'envoi");
+            System.out.println("Client : mauvaise URL");
         }
     }
-    
-    public void fonctionnement_client(){
-        
-    }
-    
 }

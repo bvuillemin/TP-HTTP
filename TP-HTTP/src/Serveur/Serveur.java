@@ -1,8 +1,11 @@
 package Serveur;
 
+import Commun.Erreur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Serveur {
     private int nombreConnexion;
@@ -13,12 +16,12 @@ public class Serveur {
     
     public Serveur() throws ErreurServeur{
         this.fonctionnementServeur = true;
-        this.portEcoute = 80;
+        this.portEcoute = 1086;
         this.nombreConnexion = 4;
         try {
-            this.socket = new ServerSocket(80, 5);
+            this.socket = new ServerSocket(1086, 5);
         } catch (IOException ex) {
-            throw new ErreurServeur();
+            throw new ErreurServeur("Erreur dans la création du socket serveur");
         }
     }
 
@@ -40,7 +43,9 @@ public class Serveur {
             }
         } 
         catch (IOException ex) {
-            throw new ErreurServeur();
+            throw new ErreurServeur("Erreur pour se connecter");
+        } catch (Erreur ex) {
+            throw new ErreurServeur(ex.getMessage());
         }
         finally{
             try{
@@ -48,7 +53,7 @@ public class Serveur {
                     connexion.close();
             }
             catch(IOException ex){
-                throw new ErreurServeur();
+                throw new ErreurServeur("Erreur fermeture connexion");
             }
         }
     }
