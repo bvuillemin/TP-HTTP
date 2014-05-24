@@ -7,4 +7,8 @@ public class Erreur extends Exception{
         super();
         this.codeErreur = 0;
     }
+    
+    public Erreur(String s){
+        super(s);
+    }
 }

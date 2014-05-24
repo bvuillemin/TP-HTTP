@@ -12,6 +12,7 @@ public class Serveur {
     private ServerSocket socket;
     
     public Serveur() throws ErreurServeur{
+        this.fonctionnementServeur = true;
         this.portEcoute = 80;
         this.nombreConnexion = 4;
         try {
@@ -34,7 +35,7 @@ public class Serveur {
         try {
             while(this.fonctionnementServeur){
                 connexion = socket.accept();
-                CommunicationServeur com = new CommunicationServeur(connexion.getInetAddress(),connexion.getPort());
+                CommunicationServeur com = new CommunicationServeur(connexion);
                 com.run();
             }
         } 
