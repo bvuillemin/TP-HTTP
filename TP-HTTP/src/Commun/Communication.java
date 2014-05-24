@@ -21,9 +21,13 @@ public abstract class Communication{
             this.socket =  new Socket(_ip, _port);
             this.adresseIP = _ip;
             this.port =_port;
+            this.out = this.socket.getOutputStream();
         } catch (IOException ex) {
             throw new Erreur("Erreur dans la communication");
         }
+    }
+    
+    public Communication() throws Erreur{
     }
     
     public String requeteGET(String url, String method){

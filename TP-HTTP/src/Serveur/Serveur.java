@@ -33,7 +33,7 @@ public class Serveur {
         return socket;
     }
     
-    public void accept() throws ErreurServeur{
+    public void ecoute() throws ErreurServeur{
         Socket connexion = null;
         try {
             while(this.fonctionnementServeur){

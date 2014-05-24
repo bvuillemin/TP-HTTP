@@ -5,7 +5,7 @@ public class MainServeur {
         try {
             System.out.println("Démarrage serveur");
             Serveur serveur = new Serveur();
-            serveur.accept();
+            serveur.ecoute();
             
         } catch (ErreurServeur ex) {
             System.out.println("Erreur serveur: " + ex.getMessage());
