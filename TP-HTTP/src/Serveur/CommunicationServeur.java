@@ -21,7 +21,7 @@ public class CommunicationServeur extends Communication implements Runnable {
 
     public void comServeur() throws ErreurServeur {
         try {
-            byte[] b = new byte[2048];
+            byte[] b = null;
             this.in = this.s.getInputStream();
             BufferedInputStream bi = new BufferedInputStream(this.in);
             int read = bi.read(b);
