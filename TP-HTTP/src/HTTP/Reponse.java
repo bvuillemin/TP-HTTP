@@ -48,6 +48,27 @@ public class Reponse extends Requete{
                 content;
     }
     
+    public static boolean isReponse (String _reponse){
+        String [] params;
+        String version;
+        int code;
+        
+        //Séparation entête-corps
+        params=_reponse.split("\n\n");//Recherche des deux lignes qui séparent le corps de l'entête
+        
+        //Récupération de la première ligne
+        params = params[0].split("\n");
+        params = params[0].split(" ");
+        if (params.length!=3){//La première ligne doit contenir une version un code et un message
+            version = params[0];
+            code = Integer.parseInt(params[1]);
+            if (code>0 && version=="HTTP/1.1"){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void getReponse (String _reponse){
         String [] params, word;
         request = _reponse;
@@ -86,5 +107,21 @@ public class Reponse extends Requete{
         return "Reponse : " + NL +
                 "Version : " + version + GAP + "Code : " + code + GAP + "Message : " + message + NL + NL +
                 "Content : " + content;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getContent() {
+        return content;
     }
 }
