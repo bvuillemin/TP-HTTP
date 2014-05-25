@@ -4,11 +4,8 @@ import HTTP.Erreur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Serveur {
-    private int nombreConnexion;
     private int portEcoute;
     private boolean fonctionnementServeur;
     
@@ -17,9 +14,8 @@ public class Serveur {
     public Serveur() throws ErreurServeur{
         this.fonctionnementServeur = true;
         this.portEcoute = 1086;
-        this.nombreConnexion = 4;
         try {
-            this.socket = new ServerSocket(1086, 5);
+            this.socket = new ServerSocket(portEcoute, 5);
         } catch (IOException ex) {
             throw new ErreurServeur("Erreur dans la création du socket serveur");
         }
