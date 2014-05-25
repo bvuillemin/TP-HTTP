@@ -1,7 +1,7 @@
-package Client;
+package Client.Core;
 
-import Commun.Communication;
-import Commun.Erreur;
+import HTTP.Communication;
+import HTTP.Erreur;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;

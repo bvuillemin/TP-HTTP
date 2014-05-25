@@ -1,6 +1,6 @@
-package Serveur;
+package Serveur.Core;
 
-import Commun.Erreur;
+import HTTP.Erreur;
 
 public class ErreurServeur extends Erreur{
     public ErreurServeur(){

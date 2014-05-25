@@ -1,6 +1,6 @@
-package Client;
+package Client.Core;
 
-import Commun.Erreur;
+import HTTP.Erreur;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;

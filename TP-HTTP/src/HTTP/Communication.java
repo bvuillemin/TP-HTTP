@@ -1,13 +1,10 @@
-package Commun;
+package HTTP;
 
-import Client.ErreurClient;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class Communication{
     protected InputStream in;

@@ -1,4 +1,4 @@
-package Client;
+package Client.UI;
 
 public class Navigateur extends javax.swing.JFrame {
 

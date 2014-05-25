@@ -1,20 +1,16 @@
-package Serveur;
+package Serveur.Core;
 
-import Commun.Communication;
-import Commun.Erreur;
+import HTTP.Communication;
+import HTTP.Erreur;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CommunicationServeur extends Communication implements Runnable {
 
     private Socket s;
 
-    public CommunicationServeur(Socket s1) throws ErreurServeur, Erreur {
+    public CommunicationServeur(Socket s1) throws Erreur {
         super();
         this.s = s1;
     }

@@ -1,4 +1,4 @@
-package Commun;
+package HTTP;
 
 public class Erreur extends Exception{
     private int codeErreur;

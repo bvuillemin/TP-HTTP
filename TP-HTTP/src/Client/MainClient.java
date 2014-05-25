@@ -1,12 +1,9 @@
 package Client;
 
-import java.io.IOException;
+import Client.Core.ErreurClient;
+import Client.Core.Client;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MainClient {
 

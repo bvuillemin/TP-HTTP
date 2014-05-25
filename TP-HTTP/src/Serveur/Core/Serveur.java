@@ -1,6 +1,6 @@
-package Serveur;
+package Serveur.Core;
 
-import Commun.Erreur;
+import HTTP.Erreur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;

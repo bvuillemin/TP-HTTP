@@ -1,6 +1,6 @@
-package Client;
+package Client.Core;
 
-import Commun.Erreur;
+import HTTP.Erreur;
 
 public class ErreurClient extends Erreur{
     public ErreurClient(){
