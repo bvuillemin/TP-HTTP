@@ -9,10 +9,7 @@ package HTTP;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/**
- *
- * @author Dimitri
- */
+
 public class GETRequest extends Requete{
     private URL url;
     
@@ -25,15 +22,10 @@ public class GETRequest extends Requete{
         String [] params;
                 
         //Récupération de la première ligne
-        params = _request.split("\n");
-        params = params[0].split(" ");
-        if (params.length!=3){//La première ligne doit contenir une version une url et GET
-            try {
-                new URL (params[1]);
-            } catch (MalformedURLException ex) {
-                return false;
-            }
-            if (params[0]=="GET" && params[2]=="HTTP/1.1"){
+        params = _request.split(NL);
+        params = params[0].split(GAP);
+        if (params.length!=3){//La première ligne doit contenir une version un nom de fichier et GET
+            if (params[0]=="GET" && params[2]==VERSION){
                 return true;
             }
         }
