@@ -5,8 +5,6 @@ import HTTP.Erreur;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class CommunicationClient extends Communication{
     

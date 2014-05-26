@@ -2,13 +2,8 @@ package Client.Core;
 
 import HTTP.Erreur;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Client {
 
@@ -28,10 +23,12 @@ public class Client {
      * @throws ErreurClient 
      */
     public void lancerRequete(URL url) throws ErreurClient {
-        String requete = com.requeteGET(url.getFile(), "HTTP/1.1");
-        if ("".equals(requete)) {
-            requete = "/";
+        String file="";
+        if ("".equals(url.getFile())) {
+            file = "/";
         }
+        String requete = com.requeteGET(file, "HTTP/1.1");
+        
         System.out.println("Client: " + requete);
         
         try {
