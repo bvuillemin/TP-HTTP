@@ -23,8 +23,8 @@ public class Client {
      * @throws ErreurClient 
      */
     public void lancerRequete(URL url) throws ErreurClient {
-        String file="";
-        if ("".equals(url.getFile())) {
+        String file=url.getFile();
+        if ("".equals(file)) {
             file = "/";
         }
         String requete = com.requeteGET(file, "HTTP/1.1");
