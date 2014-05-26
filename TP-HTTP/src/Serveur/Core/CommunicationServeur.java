@@ -25,13 +25,13 @@ public class CommunicationServeur extends Communication implements Runnable {
     
     public void comServeur() throws ErreurServeur {
         GETRequest request = new GETRequest();
-        byte[] b = null;
+        byte[] b = new byte[2048];
         
         try {
             this.in = this.s.getInputStream();
             BufferedInputStream bi = new BufferedInputStream(this.in);
             int read = bi.read(b);
-            if (read > 0) {
+            if (read >= 0) {
                 System.out.println("Serveur: message reçu");
                 String res = new String(b, "UTF-8");
                 System.out.println(res);
