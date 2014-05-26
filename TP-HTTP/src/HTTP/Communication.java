@@ -19,6 +19,7 @@ public abstract class Communication{
             this.adresseIP = _ip;
             this.port =_port;
             this.out = this.socket.getOutputStream();
+            this.in = this.socket.getInputStream();
         } catch (IOException ex) {
             throw new Erreur("Erreur dans la communication");
         }

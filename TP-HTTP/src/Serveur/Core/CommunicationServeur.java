@@ -41,7 +41,7 @@ public class CommunicationServeur extends Communication implements Runnable {
                     requeteURL(url);
                 }
                 else {
-                    throw new ErreurServeur("Le packet reçu n'est pas correct ou nons traité");
+                    throw new ErreurServeur("Le packet reçu n'est pas correct ou non traité");
                 }
             }
             if (read == - 1) {
