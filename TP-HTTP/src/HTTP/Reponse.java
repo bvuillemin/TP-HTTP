@@ -10,10 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- *
- * @author Dimitri
- */
+
 public class Reponse extends Requete{
     private int code;
     private String version;
@@ -23,7 +20,7 @@ public class Reponse extends Requete{
     private int contentLength;
     private final String contentType;
     
-    private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     
     public Reponse (int _code, String _message){
         code = _code;
@@ -54,15 +51,15 @@ public class Reponse extends Requete{
         int code;
         
         //Séparation entête-corps
-        params=_reponse.split("\n\n");//Recherche des deux lignes qui séparent le corps de l'entête
+        params=_reponse.split(NL + NL);//Recherche des deux lignes qui séparent le corps de l'entête
         
         //Récupération de la première ligne
-        params = params[0].split("\n");
-        params = params[0].split(" ");
+        params = params[0].split(NL);
+        params = params[0].split(GAP);
         if (params.length!=3){//La première ligne doit contenir une version un code et un message
             version = params[0];
             code = Integer.parseInt(params[1]);
-            if (code>0 && version=="HTTP/1.1"){
+            if (code>0 && version==VERSION){
                 return true;
             }
         }
