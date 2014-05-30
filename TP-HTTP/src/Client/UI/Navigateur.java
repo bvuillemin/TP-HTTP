@@ -36,6 +36,8 @@ public class Navigateur extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jEditorPane1.setContentType("text/html"); // NOI18N
+        jEditorPane1.setText("<html>\n    LOL\n    <head>\n        <title>LOL</title>\n        <meta charset=\"UTF-8\">\n        <meta name=\"viewport\" content=\"width=device-width\">\n    </head>\n    <body>\n        <div>AZERTY</div>\n    </body>\n</html>\n");
         jScrollPane1.setViewportView(jEditorPane1);
 
         jButton1.setText("Valider");
@@ -90,6 +92,7 @@ public class Navigateur extends javax.swing.JFrame {
         } catch (MalformedURLException ex) {
             Logger.getLogger(Navigateur.class.getName()).log(Level.SEVERE, null, ex);
         }*/
+        
         try {
             System.out.println("Démarrage client");
             Client c = new Client(InetAddress.getLocalHost(), 1086);
