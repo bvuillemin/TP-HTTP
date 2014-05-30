@@ -23,10 +23,7 @@ public class GETRequest extends Requete{
 
         //Récupération de la première ligne
         params = _request.split(NL);
-        params = params[0].split(GAP);
-        System.out.println(params[0]);
-        System.out.println(params[2]);
-        
+
         return params[0].equals("GET") && params[2].equals(VERSION);
     }
     
