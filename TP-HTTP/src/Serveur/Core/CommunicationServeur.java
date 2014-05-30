@@ -36,6 +36,7 @@ public class CommunicationServeur extends Communication implements Runnable {
                 String res = new String(b, "UTF-8");
                 System.out.println(res);
                 if (GETRequest.isGETRequest(res)){
+                    System.out.println("Paquet GET!!!");
                     request.getGETRequest(res);
                     URL url = request.getUrl();
                     requeteURL(url);

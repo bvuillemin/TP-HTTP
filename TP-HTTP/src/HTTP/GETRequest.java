@@ -18,18 +18,16 @@ public class GETRequest extends Requete{
         request="GET" + GAP + url.toString() + GAP + VERSION + NL + "Accept : " + TYPE;
     }
     
-    public static boolean isGETRequest (String _request){
-        String [] params;
-                
+    public static boolean isGETRequest(String _request) {
+        String[] params;
+
         //Récupération de la première ligne
         params = _request.split(NL);
         params = params[0].split(GAP);
-        if (params.length!=3){//La première ligne doit contenir une version un nom de fichier et GET
-            if (params[0]=="GET" && params[2]==VERSION){
-                return true;
-            }
-        }
-        return false;
+        System.out.println(params[0]);
+        System.out.println(params[2]);
+        
+        return params[0].equals("GET") && params[2].equals(VERSION);
     }
     
     public void getGETRequest (String _request){
