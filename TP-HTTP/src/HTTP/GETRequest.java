@@ -38,6 +38,15 @@ public class GETRequest extends Requete{
         
     }
     
+    public static String getNomFichierRequest(String _request){
+        String[] params;
+
+        params = _request.split(NL);
+        params = params[0].split(GAP);
+        
+        return params[1];
+    }
+    
     public void getGETRequest (String _request){
         String [] params, word;
         request = _request;

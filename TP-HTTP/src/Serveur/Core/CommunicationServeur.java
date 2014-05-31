@@ -3,11 +3,16 @@ package Serveur.Core;
 import HTTP.Communication;
 import HTTP.Erreur;
 import HTTP.GETRequest;
+import HTTP.Reponse;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CommunicationServeur extends Communication implements Runnable {
 
@@ -37,9 +42,8 @@ public class CommunicationServeur extends Communication implements Runnable {
                 System.out.println(res);
                 if (GETRequest.isGETRequest(res)){
                     System.out.println("Paquet GET!!!");
-                    request.getGETRequest(res);
-                    URL url = request.getUrl();
-                    requeteURL(url);
+                    String nomFichier = GETRequest.getNomFichierRequest(res);
+                    envoyerFichier(nomFichier);
                 }
                 else {
                     throw new ErreurServeur("Le packet reçu n'est pas correct ou non traité");
@@ -59,6 +63,22 @@ public class CommunicationServeur extends Communication implements Runnable {
             this.comServeur();
         } catch (ErreurServeur ex) {
 
+        }
+    }
+
+    private void envoyerFichier(String nomFichier) {
+        try {
+            this.out = this.s.getOutputStream();
+            BufferedOutputStream bufout = new BufferedOutputStream(this.out);
+            
+            FileInputStream fe= new FileInputStream(nomFichier);
+            
+            Reponse rep = new Reponse(200, "OK");
+            
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(CommunicationServeur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
