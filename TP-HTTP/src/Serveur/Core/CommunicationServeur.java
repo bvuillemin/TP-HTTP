@@ -65,7 +65,7 @@ public class CommunicationServeur extends Communication implements Runnable {
 
         /*On vérifie si l'on doit sélectionner l'index ou non*/
         if (nomFichier.equals(new String("/"))) {
-            nomFichierFinal = repertoire + "/index.html";
+            nomFichierFinal = repertoire + "\\index.html";
         } else {
             nomFichierFinal = repertoire + nomFichier;
         }
