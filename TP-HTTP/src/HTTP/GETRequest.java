@@ -23,8 +23,19 @@ public class GETRequest extends Requete{
 
         //Récupération de la première ligne
         params = _request.split(NL);
+        params = params[0].split(GAP);
+        String version = params[2];
+        //String[] res = params[2].split(GAP);
 
-        return params[0].equals("GET") && params[2].equals(VERSION);
+        if(params[0].equals(new String ("GET"))){
+            for(int i = 0; i < 8; i++){ /*On compara caractère pas caractère*/
+                if(version.charAt(i) != new String(VERSION).charAt(i))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+        
     }
     
     public void getGETRequest (String _request){
