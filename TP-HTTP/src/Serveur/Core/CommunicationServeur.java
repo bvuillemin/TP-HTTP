@@ -57,28 +57,51 @@ public class CommunicationServeur extends Communication implements Runnable {
         }
     }
 
+    private void envoyerFichier(String nomFichier) throws ErreurServeur {
+        String nomFichierFinal;
+
+        /*On récupère le répertoire courant*/
+        String repertoire = System.getProperty("user.dir");
+
+        /*On vérifie si l'on doit sélectionner l'index ou non*/
+        if (nomFichier.equals(new String("/"))) {
+            nomFichierFinal = repertoire + "/index.html";
+        } else {
+            nomFichierFinal = repertoire + nomFichier;
+        }
+
+
+        try {
+            byte[] buffer = null;
+            StringBuilder page = new StringBuilder("");
+            this.out = this.s.getOutputStream();
+            FileInputStream fe = new FileInputStream(nomFichier);
+            BufferedInputStream br = new BufferedInputStream(fe);
+             
+            /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
+            while (br.available() != 0) {
+                page.append((char)br.read());
+            }
+            
+            Reponse rep = new Reponse();
+            rep.buildReponse(200, "OK", page.toString());
+            
+            this.out.write(rep.getRequest().getBytes());
+            this.out.flush();
+        }
+        catch (IOException ex) {
+            System.out.println(ex.toString());
+            throw new ErreurServeur("Erreur dans l'envoi");
+        }        
+    }
+    
+    
     @Override
     public void run() {
         try {
             this.comServeur();
         } catch (ErreurServeur ex) {
 
-        }
-    }
-
-    private void envoyerFichier(String nomFichier) {
-        try {
-            this.out = this.s.getOutputStream();
-            BufferedOutputStream bufout = new BufferedOutputStream(this.out);
-            
-            FileInputStream fe= new FileInputStream(nomFichier);
-            
-            Reponse rep = new Reponse(200, "OK");
-            
-            
-            
-        } catch (IOException ex) {
-            Logger.getLogger(CommunicationServeur.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

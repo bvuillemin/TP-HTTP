@@ -32,6 +32,14 @@ public class Reponse extends Requete{
         request = version + GAP + code + GAP + message;
     }
     
+    public Reponse(){
+        
+        date = new Date();
+        version = VERSION;
+        contentType = TYPE;        
+        content = "";
+    }
+    
     public void buildReponse (int _code, String _message, String _content){
         code = _code;
         message = _message;
