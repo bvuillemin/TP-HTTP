@@ -34,6 +34,7 @@ public class Client {
         try {
             com.getOut().write(requete.getBytes());
             com.getOut().flush();
+            this.com.attente_fichier(file);
         } catch (IOException ex) {
             System.out.println(ex.toString());
             throw new ErreurClient("Erreur dans l'envoi");

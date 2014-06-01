@@ -69,10 +69,11 @@ public class CommunicationServeur extends Communication implements Runnable {
         } else {
             nomFichierFinal = repertoire + nomFichier;
         }
+        
+        //nomFichierFinal = "C:\\Users\\Pierre\\index.html";
 
 
         try {
-            byte[] buffer = null;
             StringBuilder page = new StringBuilder("");
             this.out = this.s.getOutputStream();
             FileInputStream fe = new FileInputStream(nomFichier);
