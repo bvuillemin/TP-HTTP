@@ -1,9 +1,7 @@
 package Client;
 
-import Client.Core.ErreurClient;
-import Client.Core.Client;
-import java.net.InetAddress;
-import java.net.URL;
+import Client.Core.ClientObservable;
+import Client.UI.Navigateur;
 
 public class MainClient {
 
@@ -12,16 +10,8 @@ public class MainClient {
      * @param args 
      */
     public static void main(String[] args){
-        //Navigateur fenetre = new Navigateur();
-        try {
-            System.out.println("Démarrage client");
-            Client c = new Client(InetAddress.getLocalHost(), 1086);
-            c.lancerRequete(new URL("http://wwww.google.fr/"));
-            
-        } catch (ErreurClient er) {
-            System.out.println("Client: " + er.getMessage());
-        } catch (Exception ex) {
-            System.out.println("Client : mauvaise URL");
-        }
+        ClientObservable client = new ClientObservable();
+        Navigateur fenetre = new Navigateur(client);
+        client.addObserver(fenetre);
     }
 }

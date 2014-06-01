@@ -1,20 +1,23 @@
 package Client.UI;
 
-import Client.Core.Client;
+import Client.Core.ClientObservable;
 import Client.Core.ErreurClient;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Navigateur extends javax.swing.JFrame {
+public class Navigateur extends javax.swing.JFrame implements Observer{
 
+    private URL url;
+    private ClientObservable client;
     /**
      * Creates new form Navigateur
      */
-    public Navigateur() {
+    public Navigateur(ClientObservable _client) {
+        client = _client;
         initComponents();
+        this.setVisible(true);
     }
 
     /**
@@ -37,7 +40,7 @@ public class Navigateur extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jEditorPane1.setContentType("text/html"); // NOI18N
-        jEditorPane1.setText("<html>\n    LOL\n    <head>\n        <title>LOL</title>\n        <meta charset=\"UTF-8\">\n        <meta name=\"viewport\" content=\"width=device-width\">\n    </head>\n    <body>\n        <div>AZERTY</div>\n    </body>\n</html>\n");
+        jEditorPane1.setText("");
         jScrollPane1.setViewportView(jEditorPane1);
 
         jButton1.setText("Valider");
@@ -86,62 +89,23 @@ public class Navigateur extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        /*try {
-            new URL(jTextField1.getText());
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(Navigateur.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-        
         try {
-            System.out.println("Démarrage client");
-            Client c = new Client(InetAddress.getLocalHost(), 1086);
-            c.lancerRequete(new URL("http://wwww.google.fr/"));
-        } catch (ErreurClient er) {
-            System.out.println("Client: " + er.getMessage());
-        } catch (Exception ex) {
+            url = new URL(jTextField1.getText()); 
+            client.lancerRequete(url);
+             
+        } catch (MalformedURLException ex) {
             System.out.println("Client : mauvaise URL");
-        }
+        } catch (ErreurClient ex) {
+                System.out.println("Client: " + ex.getMessage());
+            }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Navigateur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Navigateur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Navigateur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Navigateur.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Navigateur().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -152,4 +116,12 @@ public class Navigateur extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof ClientObservable) {
+            client = (ClientObservable) o;
+            client.getFile();
+        }
+    }
 }

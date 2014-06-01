@@ -1,13 +1,16 @@
 package Client.Core;
 
 import HTTP.Erreur;
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 
 public class Client {
 
-    private CommunicationClient com;
+    public CommunicationClient com;
+    public URL url;
+    public File file;
 
     public Client(InetAddress _ip, int _port) throws ErreurClient {
         try {
@@ -22,19 +25,20 @@ public class Client {
      * @param url
      * @throws ErreurClient 
      */
-    public void lancerRequete(URL url) throws ErreurClient {
-        String file=url.getFile();
-        if ("".equals(file)) {
-            file = "/";
+    public void lancerRequete(URL _url) throws ErreurClient {
+        url = _url;
+        String fileName=url.getFile();
+        if ("".equals(fileName)) {
+            fileName = "/";
         }
-        String requete = com.requeteGET(file, "HTTP/1.1");
+        String requete = com.requeteGET(fileName, "HTTP/1.1");
         
         System.out.println("Client: " + requete);
         
         try {
             com.getOut().write(requete.getBytes());
             com.getOut().flush();
-            this.com.attente_fichier(file);
+            file=this.com.attente_fichier(fileName);
         } catch (IOException ex) {
             System.out.println(ex.toString());
             throw new ErreurClient("Erreur dans l'envoi");

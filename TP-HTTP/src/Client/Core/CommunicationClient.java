@@ -14,7 +14,7 @@ public class CommunicationClient extends Communication{
         super(_ip, _port);
     }
     
-    public void attente_fichier(String nom_fichier) throws ErreurClient{
+    public File attente_fichier(String nom_fichier) throws ErreurClient{
         try {
             byte[] b = new byte[2048];
             Reponse rep=new Reponse();
@@ -29,7 +29,7 @@ public class CommunicationClient extends Communication{
                     System.out.println(header);
                     
                     /*On enregistre la data dans un fichier*/
-                    File fichier = new File(get_data(res));
+                    return new File(rep.getContent());
                     
                 }
             }
@@ -39,17 +39,6 @@ public class CommunicationClient extends Communication{
         } catch (IOException ex) {
             throw new ErreurClient("Erreur dans la lecture du flux " + ex.getMessage());
         }
-    }
-    
-    public String get_data(String _reponse){
-        String [] params;    
-        
-        params = _reponse.split("\n");
-        int i = 0;
-        
-        while(params[i] != ""){
-            i++;
-        }
-        return params[i];
+        return null;
     }
 }
