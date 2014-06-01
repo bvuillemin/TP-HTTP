@@ -4,14 +4,11 @@ import Client.Core.ClientObservable;
 import Client.Core.ErreurClient;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Navigateur extends javax.swing.JFrame implements Observer{
 
