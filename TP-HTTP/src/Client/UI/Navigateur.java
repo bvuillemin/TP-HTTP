@@ -2,10 +2,16 @@ package Client.UI;
 
 import Client.Core.ClientObservable;
 import Client.Core.ErreurClient;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Navigateur extends javax.swing.JFrame implements Observer{
 
@@ -120,8 +126,23 @@ public class Navigateur extends javax.swing.JFrame implements Observer{
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof ClientObservable) {
-            client = (ClientObservable) o;
-            client.getFile();
+            try {
+                client = (ClientObservable) o;
+                client.getFile();
+                
+                StringBuilder page = new StringBuilder("");
+                FileInputStream fe = null;
+                fe = new FileInputStream(client.getFile().getAbsolutePath());
+                BufferedInputStream br = new BufferedInputStream(fe);
+                
+                /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
+                while (br.available() != 0) {
+                    page.append((char)br.read());
+                }
+                
+                jEditorPane1.setText(page.toString());
+            } catch (IOException ex) {
+            }
         }
     }
 }
