@@ -75,6 +75,7 @@ public class Reponse extends Requete{
                 content = params[1];
                 contentLength = content.length();
             }
+            header = params[0];
 
             //Récupération de la première ligne
             params = params[0].split(NL);
