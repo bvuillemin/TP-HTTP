@@ -43,37 +43,37 @@ public class Reponse extends Requete{
                 content;
     }
     
-    public static boolean isReponse (String _reponse){
-        String [] params;
+    public static boolean isReponse(String _reponse) {
+        String[] params;
         String version;
         int code;
-        
+
         //Séparation entête-corps
-        params=_reponse.split(NL + NL);//Recherche des deux lignes qui séparent le corps de l'entête
-        
+        params = _reponse.split(NL + NL);//Recherche des deux lignes qui séparent le corps de l'entête
+
         //Récupération de la première ligne
         params = params[0].split(NL);
         params = params[0].split(GAP);
-        if (params.length!=3){//La première ligne doit contenir une version un code et un message
+        if (params.length == 3) {//La première ligne doit contenir une version un code et un message
             version = params[0];
             code = Integer.parseInt(params[1]);
-            if (code>0 && version==VERSION){
+            if (code > 0 && version.equals(new String(VERSION))) {
                 return true;
             }
         }
         return false;
     }
     
-    public boolean getReponse (String _reponse){
-        String [] params, word;
+    public boolean getReponse(String _reponse) {
+        String[] params, word;
         request = _reponse;
-        
-        if (isReponse(_reponse)){
+
+        if (isReponse(_reponse)) {
             //Séparation entête-corps
-            params=request.split(NL+NL);//Recherche des deux lignes qui séparent le corps de l'entête
-            if (params.length>=2){
+            params = request.split(NL + NL);//Recherche des deux lignes qui séparent le corps de l'entête
+            if (params.length >= 2) {
                 content = params[1];
-                contentLength=content.length();
+                contentLength = content.length();
             }
 
             //Récupération de la première ligne
