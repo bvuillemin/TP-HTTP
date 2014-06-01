@@ -17,6 +17,7 @@ public class MainClient {
             System.out.println("Démarrage client");
             Client c = new Client(InetAddress.getLocalHost(), 1086);
             c.lancerRequete(new URL("http://wwww.google.fr/"));
+            
         } catch (ErreurClient er) {
             System.out.println("Client: " + er.getMessage());
         } catch (Exception ex) {

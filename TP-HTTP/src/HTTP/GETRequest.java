@@ -6,29 +6,30 @@
 
 package HTTP;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.File;
 
 
 public class GETRequest extends Requete{
-    private URL url;
+    private File file;
     
-    public void buildRequest (URL _url){
-        url = _url;
-        request="GET" + GAP + url.toString() + GAP + VERSION + NL + "Accept : " + TYPE;
+    public GETRequest(){
+        request="GET" + GAP + "/" + GAP + VERSION + NL + "Accept : " + TYPE + NL + NL;
+    }
+    
+    public GETRequest (File _file){
+        file = _file;
+        request="GET" + GAP + _file.toString() + GAP + VERSION + NL + "Accept : " + TYPE + NL + NL;
     }
     
     public static boolean isGETRequest(String _request) {
         String[] params;
 
         //Récupération de la première ligne
-        params = _request.split(NL);
-        params = params[0].split(GAP);
+        params = get_header(_request).split(GAP);
         String version = params[2];
-        //String[] res = params[2].split(GAP);
 
         if(params[0].equals(new String ("GET"))){
-            for(int i = 0; i < 8; i++){ /*On compara caractère pas caractère*/
+            for(int i = 0; i < 8; i++){ /*On comparera caractère pas caractère*/
                 if(version.charAt(i) != new String(VERSION).charAt(i))
                     return false;
             }
@@ -38,30 +39,25 @@ public class GETRequest extends Requete{
         
     }
     
-    public static String getNomFichierRequest(String _request){
-        String[] params;
-
-        params = _request.split(NL);
-        params = params[0].split(GAP);
-        
-        return params[1];
-    }
-    
-    public void getGETRequest (String _request){
+    public boolean getGETRequest (String _request){
         String [] params, word;
         request = _request;
 
         //Récupération de la première ligne
-        params = request.split(NL);
-        word = params[0].split(GAP);
-        try {
-            url = new URL (word[1]);
-        } catch (MalformedURLException ex) {
-            System.out.println("Ceci n'est pas une requête get valide");
+        if (isGETRequest(_request)){
+            params = request.split(NL);
+            word = params[0].split(GAP);
+            file = new File (word[1]);
+            return true;
         }
+        return false;        
     }
 
-    public URL getUrl() {
-        return url;
+    public File getFile() {
+        return file;
+    }
+    
+    public String getFileName(){
+        return file.toString();
     }
 }

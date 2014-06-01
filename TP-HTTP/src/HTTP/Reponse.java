@@ -6,8 +6,6 @@
 
 package HTTP;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -20,17 +18,6 @@ public class Reponse extends Requete{
     private int contentLength;
     private final String contentType;
     
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
-    
-    public Reponse (int _code, String _message){
-        code = _code;
-        message = _message;
-        date = new Date();
-        version = VERSION;
-        contentType = TYPE;        
-        content = "";
-        request = version + GAP + code + GAP + message;
-    }
     
     public Reponse(){
         
@@ -40,14 +27,17 @@ public class Reponse extends Requete{
         content = "";
     }
     
-    public void buildReponse (int _code, String _message, String _content){
+    public Reponse (int _code, String _message, String _content){
         code = _code;
         message = _message;
         content = _content;
-        contentLength=content.length();
+        contentLength=content.length();  
+        contentType = TYPE; 
+        date = new Date();
+        version = VERSION;
         
         request = version + GAP + code + GAP + message + NL +
-                DateToString() + NL +
+                DateToString(date) + NL +
                 "Content-Type : " + contentType + NL +
                 "Content-Length : " + contentLength + NL + NL +//Deux NL pour séparer l'entête du corps
                 content;
@@ -74,37 +64,31 @@ public class Reponse extends Requete{
         return false;
     }
     
-    public void getReponse (String _reponse){
+    public boolean getReponse (String _reponse){
         String [] params, word;
         request = _reponse;
         
-        //Séparation entête-corps
-        params=request.split(NL+NL);//Recherche des deux lignes qui séparent le corps de l'entête
-        if (params.length>=2){
-            content = params[1];
-            contentLength=content.length();
+        if (isReponse(_reponse)){
+            //Séparation entête-corps
+            params=request.split(NL+NL);//Recherche des deux lignes qui séparent le corps de l'entête
+            if (params.length>=2){
+                content = params[1];
+                contentLength=content.length();
+            }
+
+            //Récupération de la première ligne
+            params = params[0].split(NL);
+            word = params[0].split(GAP);
+            version = word[0];
+            code = Integer.parseInt(word[1]);
+            message = word[2];
+            return true;
         }
-        
-        //Récupération de la première ligne
-        params = params[0].split(NL);
-        word = params[0].split(GAP);
-        version = word[0];
-        code = Integer.parseInt(word[1]);
-        message = word[2];
+        return false;
     }
     
-    public Date StringToDate (String _date){
-        String temp = _date.replaceAll("Date : ", "");//On retire le texte du départ
-        try {
-            return DATE_FORMAT.parse(temp);
-        } catch (ParseException ex) {
-            //Date inconvertible
-            return null;
-        }
-    }
-    
-    public String DateToString() {
-        return "Date : " + DATE_FORMAT.format(date);
+    public boolean reponse_valide(){
+        return ( code == 200 && message=="OK");
     }
 
     @Override

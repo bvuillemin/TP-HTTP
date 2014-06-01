@@ -5,15 +5,9 @@ import HTTP.Erreur;
 import HTTP.GETRequest;
 import HTTP.Reponse;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class CommunicationServeur extends Communication implements Runnable {
 
     private Socket s;
@@ -24,12 +18,8 @@ public class CommunicationServeur extends Communication implements Runnable {
         this.s = s1;
     }
     
-    public void requeteURL (URL url)throws ErreurServeur{
-        File file = new File(PATH + url.getFile());
-    }
-    
     public void comServeur() throws ErreurServeur {
-        GETRequest request = new GETRequest();
+        GETRequest request=new GETRequest();
         byte[] b = new byte[2048];
         
         try {
@@ -40,9 +30,9 @@ public class CommunicationServeur extends Communication implements Runnable {
                 System.out.println("Serveur: message reçu");
                 String res = new String(b, "UTF-8");
                 System.out.println(res);
-                if (GETRequest.isGETRequest(res)){
+                if (request.getGETRequest(res)){
                     System.out.println("Paquet GET!!!");
-                    String nomFichier = GETRequest.getNomFichierRequest(res);
+                    String nomFichier = request.getFileName();
                     envoyerFichier(nomFichier);
                 }
                 else {
@@ -58,11 +48,11 @@ public class CommunicationServeur extends Communication implements Runnable {
     }
 
     private void envoyerFichier(String nomFichier) throws ErreurServeur {
-        String nomFichierFinal;
+        String nomFichierFinal="";
 
         /*On récupère le répertoire courant*/
         String repertoire = System.getProperty("user.dir");
-
+        //String repertoire = this.PATH;
         /*On vérifie si l'on doit sélectionner l'index ou non*/
         if (nomFichier.equals(new String("/"))) {
             nomFichierFinal = repertoire + "\\index.html";
@@ -76,7 +66,7 @@ public class CommunicationServeur extends Communication implements Runnable {
         try {
             StringBuilder page = new StringBuilder("");
             this.out = this.s.getOutputStream();
-            FileInputStream fe = new FileInputStream(nomFichier);
+            FileInputStream fe = new FileInputStream(nomFichierFinal);
             BufferedInputStream br = new BufferedInputStream(fe);
              
             /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
@@ -84,8 +74,7 @@ public class CommunicationServeur extends Communication implements Runnable {
                 page.append((char)br.read());
             }
             
-            Reponse rep = new Reponse();
-            rep.buildReponse(200, "OK", page.toString());
+            Reponse rep = new Reponse(200, "OK", page.toString());
             
             this.out.write(rep.getRequest().getBytes());
             this.out.flush();
