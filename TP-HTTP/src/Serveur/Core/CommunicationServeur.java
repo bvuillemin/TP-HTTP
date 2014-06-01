@@ -54,7 +54,7 @@ public class CommunicationServeur extends Communication implements Runnable {
         String repertoire = System.getProperty("user.dir");
         //String repertoire = this.PATH;
         /*On vérifie si l'on doit sélectionner l'index ou non*/
-        if (nomFichier.equals(new String("/"))) {
+        if (nomFichier.equals(new String("\\"))) {
             nomFichierFinal = repertoire + "\\index.html";
         } else {
             nomFichierFinal = repertoire + nomFichier;
