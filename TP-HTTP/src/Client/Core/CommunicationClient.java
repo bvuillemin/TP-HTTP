@@ -17,7 +17,7 @@ public class CommunicationClient extends Communication {
         super(_ip, _port);
     }
 
-    public void attente_fichier(String nom_fichier) throws ErreurClient {
+    public File attente_fichier(String nom_fichier) throws ErreurClient {
         try {
             byte[] b = new byte[2048];
             Reponse rep = new Reponse();
@@ -36,7 +36,7 @@ public class CommunicationClient extends Communication {
                     String nomFichierFinal;
                     //String repertoire = this.PATH;
                     /*On vérifie si l'on doit sélectionner l'index ou non*/
-                    if (nom_fichier.equals(new String("\\"))) {
+                    if (nom_fichier.equals(new String("/"))) {
                         nomFichierFinal = repertoire + "\\Client\\index.html";
                     } else {
                         nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
@@ -44,12 +44,14 @@ public class CommunicationClient extends Communication {
 
                     /*On enregistre la data dans un fichier*/
                     FileWriter writer = new FileWriter(nomFichierFinal, false);
-                    writer.write(rep.getMessage());
+                    writer.write(rep.getContent());
 
                     if (writer != null) {
                         writer.close();
                     }
-
+                    
+                    File f = new File(nomFichierFinal);
+                    return f;
                 }
             }
             if (read == - 1) {
@@ -58,5 +60,6 @@ public class CommunicationClient extends Communication {
         } catch (IOException ex) {
             throw new ErreurClient("Erreur dans la lecture du flux " + ex.getMessage());
         }
+        return null;
     }
 }

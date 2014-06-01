@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Client.Core;
 
 import java.io.File;
@@ -12,10 +6,6 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Observable;
 
-/**
- *
- * @author Dimitri
- */
 public class ClientObservable extends Observable {
     private Client client;
     
