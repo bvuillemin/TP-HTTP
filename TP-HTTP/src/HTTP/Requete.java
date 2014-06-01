@@ -19,13 +19,13 @@ public abstract class Requete {
     
     public static String get_header(String _reponse){
         String [] params;    
-        String header = "";
+        String header = null;
         
         params = _reponse.split(NL + NL);
         params = params[0].split(NL);
          
         for(int i = 0; i < params.length; i++){
-            header += params[i] + " ";
+            header += " " +  params[i];
         }
         
         return header;
