@@ -23,12 +23,11 @@ public abstract class Requete {
         
         params = _reponse.split(NL + NL);
         params = params[0].split(NL);
-        int i = 0;
-        
-        while(params[i] != ""){
+         
+        for(int i = 0; i < params.length; i++){
             header += " " +  params[i];
-            i++;
         }
+        
         return header;
     }
     
