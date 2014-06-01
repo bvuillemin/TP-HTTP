@@ -20,40 +20,41 @@ public class CommunicationClient extends Communication {
             byte[] b = new byte[2048];
             Reponse rep = new Reponse();
             BufferedInputStream bi = new BufferedInputStream(this.in);
-
-            int read = bi.read(b);
-            if (read > 0) {
-                System.out.println("Client: message reçu");
-                String res = new String(b, "UTF-8");
-                if (rep.getReponse(res)) {
-                    String header = rep.get_header();
-                    System.out.println(header);
-
-                    /*On récupère le répertoire courant*/
-                    String repertoire = System.getProperty("user.dir");
-                    String nomFichierFinal;
-                    //String repertoire = this.PATH;
-                    /*On vérifie si l'on doit sélectionner l'index ou non*/
-                    if (nom_fichier.equals(new String("/"))) {
-                        nomFichierFinal = repertoire + "\\Client\\index.html";
-                    } else {
-                        nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
-                    }
-
-                    /*On enregistre la data dans un fichier*/
-                    FileWriter writer = new FileWriter(nomFichierFinal, false);
-                    writer.write(rep.getContent());
-
-                    if (writer != null) {
-                        writer.close();
-                    }
-                    
-                    File f = new File(nomFichierFinal);
-                    return f;
-                }
+            
+            StringBuilder page = new StringBuilder("");
+            
+            /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
+            while (bi.available() != 0) {
+                page.append((char)bi.read());
             }
-            if (read == - 1) {
-                throw new ErreurClient("Erreur dans la lecture du flux");
+            
+            String res = page.toString();
+            System.out.println("Client: message reçu");
+            if (rep.getReponse(res)) {
+                String header = rep.get_header();
+                System.out.println(header);
+
+                /*On récupère le répertoire courant*/
+                String repertoire = System.getProperty("user.dir");
+                String nomFichierFinal;
+                //String repertoire = this.PATH;
+                /*On vérifie si l'on doit sélectionner l'index ou non*/
+                if (nom_fichier.equals(new String("/"))) {
+                    nomFichierFinal = repertoire + "\\Client\\index.html";
+                } else {
+                    nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
+                }
+
+                /*On enregistre la data dans un fichier*/
+                FileWriter writer = new FileWriter(nomFichierFinal, false);
+                writer.write(rep.getContent());
+
+                if (writer != null) {
+                    writer.close();
+                }
+
+                File f = new File(nomFichierFinal);
+                return f;
             }
         } catch (IOException ex) {
             throw new ErreurClient("Erreur dans la lecture du flux " + ex.getMessage());
