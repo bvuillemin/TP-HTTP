@@ -7,7 +7,7 @@ public class ErreurServeur extends Erreur{
         super();
     }
     
-    public ErreurServeur(String s){
-        super(s);
+    public ErreurServeur(int code, String s){
+        super(code, s);       
     }
 }

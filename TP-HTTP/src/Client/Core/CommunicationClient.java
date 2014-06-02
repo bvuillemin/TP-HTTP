@@ -57,7 +57,7 @@ public class CommunicationClient extends Communication {
                 return f;
             }
         } catch (IOException ex) {
-            throw new ErreurClient("Erreur dans la lecture du flux " + ex.getMessage());
+            throw new ErreurClient(400,"Erreur dans la lecture du flux " + ex.getMessage());
         }
         return null;
     }

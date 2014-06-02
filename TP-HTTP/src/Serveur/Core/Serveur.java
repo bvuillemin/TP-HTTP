@@ -17,7 +17,7 @@ public class Serveur {
         try {
             this.socket = new ServerSocket(portEcoute, 5);
         } catch (IOException ex) {
-            throw new ErreurServeur("Erreur dans la création du socket serveur");
+            throw new ErreurServeur(500,"Erreur dans la création du socket serveur");
         }
     }
 
@@ -34,14 +34,15 @@ public class Serveur {
         try {
             while(this.fonctionnementServeur){
                 connexion = socket.accept();
+                connexion.setSoTimeout(3000);
                 CommunicationServeur com = new CommunicationServeur(connexion);
                 com.run();
             }
         } 
         catch (IOException ex) {
-            throw new ErreurServeur("Erreur pour se connecter");
+            throw new ErreurServeur(500, "Erreur ouverture connexion");
         } catch (Erreur ex) {
-            throw new ErreurServeur(ex.getMessage());
+            throw (ErreurServeur) ex;
         }
         finally{
             try{
@@ -49,7 +50,7 @@ public class Serveur {
                     connexion.close();
             }
             catch(IOException ex){
-                throw new ErreurServeur("Erreur fermeture connexion");
+                throw new ErreurServeur(500, "Erreur fermeture connexion");
             }
         }
     }

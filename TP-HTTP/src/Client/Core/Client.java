@@ -16,7 +16,7 @@ public class Client {
         try {
             this.com = new CommunicationClient(_ip, _port);
         } catch (Erreur ex) {
-            throw new ErreurClient(ex.getMessage());
+            throw new ErreurClient(400,ex.getMessage());
         }
     }
     
@@ -41,7 +41,7 @@ public class Client {
             file = this.com.attente_fichier(fileName);
         } catch (IOException ex) {
             System.out.println(ex.toString());
-            throw new ErreurClient("Erreur dans l'envoi");
+            throw new ErreurClient(400,"Erreur dans l'envoi");
         }
     }
 }

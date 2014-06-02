@@ -8,7 +8,8 @@ public class Erreur extends Exception{
         this.codeErreur = 0;
     }
     
-    public Erreur(String s){
+    public Erreur(int code,String s){
         super(s);
+        this.codeErreur = code;
     }
 }

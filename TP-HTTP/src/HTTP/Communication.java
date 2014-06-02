@@ -21,7 +21,7 @@ public abstract class Communication{
             this.out = this.socket.getOutputStream();
             this.in = this.socket.getInputStream();
         } catch (IOException ex) {
-            throw new Erreur("Erreur dans la communication");
+            throw new Erreur(500,"Erreur dans la communication");
         }
     }
     
