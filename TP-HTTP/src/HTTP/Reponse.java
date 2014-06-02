@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package HTTP;
 
 import java.util.Date;
@@ -89,7 +83,7 @@ public class Reponse extends Requete{
     }
     
     public boolean reponse_valide(){
-        return ( code == 200 && message=="OK");
+        return ( code == 200 && message.equals(new String("OK")));
     }
 
     @Override
