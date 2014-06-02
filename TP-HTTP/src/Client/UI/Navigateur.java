@@ -42,9 +42,12 @@ public class Navigateur extends javax.swing.JFrame implements Observer{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jEditorPane1.setEditable(false);
         jEditorPane1.setContentType("text/html"); // NOI18N
         jEditorPane1.setText("");
         jScrollPane1.setViewportView(jEditorPane1);
+
+        jTextField1.setText("http://www.google.fr/");
 
         jButton1.setText("Valider");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

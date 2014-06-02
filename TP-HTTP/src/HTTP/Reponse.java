@@ -1,5 +1,9 @@
 package HTTP;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 
 
@@ -19,6 +23,26 @@ public class Reponse extends Requete{
         version = VERSION;
         contentType = TYPE;        
         content = "";
+    }
+    
+    public static Reponse Erreur (int type, String message){
+        FileInputStream fe = null;
+        try {
+            String repertoire = System.getProperty("user.dir");
+            StringBuilder page = new StringBuilder("");
+            fe = new FileInputStream(repertoire+ "\\Server\\"+type+".html");
+            BufferedInputStream br = new BufferedInputStream(fe);
+            /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
+            while (br.available() != 0) {
+                page.append((char)br.read());
+            }
+            fe.close();
+            return new Reponse (type, message, page.toString());
+        } catch (FileNotFoundException ex) {
+            return new Reponse (type, message, "");
+        } catch (IOException ex) {
+            return new Reponse (type, message, "");
+        } 
     }
     
     public Reponse (int _code, String _message, String _content){
@@ -82,10 +106,6 @@ public class Reponse extends Requete{
         return false;
     }
     
-    public boolean reponse_valide(){
-        return ( code == 200 && message.equals(new String("OK")));
-    }
-
     @Override
     public String toString() {
         return "Reponse : " + NL +

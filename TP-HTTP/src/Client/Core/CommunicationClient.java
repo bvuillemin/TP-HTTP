@@ -24,6 +24,9 @@ public class CommunicationClient extends Communication {
             StringBuilder page = new StringBuilder("");
 
             /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
+            while (bi.available()==0){
+                
+            }
             while (bi.available() != 0) {
                 page.append((char) bi.read());
             }
@@ -34,7 +37,6 @@ public class CommunicationClient extends Communication {
                 /*On récupère le répertoire courant*/
                 String repertoire = System.getProperty("user.dir");
                 String nomFichierFinal;
-                if (rep.reponse_valide()) {
                     String header = rep.get_header();
                     System.out.println(header);
 
@@ -43,7 +45,7 @@ public class CommunicationClient extends Communication {
                     if (nom_fichier.equals(new String("/"))) {
                         nomFichierFinal = repertoire + "\\Client\\index.html";
                     } else {
-                        nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
+                        nomFichierFinal = repertoire + "\\Client\\" + rep.getCode();
                     }
 
                     /*On enregistre la data dans un fichier*/
@@ -53,17 +55,15 @@ public class CommunicationClient extends Communication {
                     if (writer != null) {
                         writer.close();
                     }
-                } else {
-                    nomFichierFinal = repertoire + "\\Client\\" + rep.getCode() + ".html";
-                }
-
                 File f = new File(nomFichierFinal);
                 return f;
+            }
+            else{
+                throw new ErreurClient(400, "Message reçu non traité");
             }
 
         } catch (IOException ex) {
             throw new ErreurClient(400, "Erreur dans la lecture du flux " + ex.getMessage());
         }
-        return null;
     }
 }

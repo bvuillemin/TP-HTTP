@@ -5,20 +5,12 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
-
+import java.net.UnknownHostException;
 public class Client {
 
     public CommunicationClient com;
     public URL url;
     public File file;
-
-    public Client(InetAddress _ip, int _port) throws ErreurClient {
-        try {
-            this.com = new CommunicationClient(_ip, _port);
-        } catch (Erreur ex) {
-            throw new ErreurClient(400,ex.getMessage());
-        }
-    }
     
     /**
      * Va permettre de construire la requête puis de l'envoyer
@@ -27,6 +19,14 @@ public class Client {
      */
     public void lancerRequete(URL _url) throws ErreurClient {
         url = _url;
+        try {
+            this.com = new CommunicationClient(InetAddress.getLocalHost(), 1086);
+        } catch (Erreur ex) {
+            throw new ErreurClient(400,ex.getMessage());
+        } catch (UnknownHostException ex) {
+            throw new ErreurClient(400,ex.getMessage());
+        }
+        
         String fileName=url.getFile();
         if ("".equals(fileName)) {
             fileName = "/";
