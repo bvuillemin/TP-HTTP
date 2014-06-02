@@ -55,7 +55,8 @@ public class CommunicationClient extends Communication {
                     }
                 }
                 else{
-                    nomFichierFinal = repertoire + "\\Client\\404.html";
+                    String codeErreur = new String(this.code);
+                    nomFichierFinal = repertoire + "\\Client\\" + codeErreur + ".html";
                 }
     
                 File f = new File(nomFichierFinal);
