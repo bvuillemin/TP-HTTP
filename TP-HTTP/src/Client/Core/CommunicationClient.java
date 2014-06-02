@@ -23,6 +23,8 @@ public class CommunicationClient extends Communication {
             
             StringBuilder page = new StringBuilder("");
             
+            while (bi.available() == 0) {
+            }
             /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
             while (bi.available() != 0) {
                 page.append((char)bi.read());
@@ -31,34 +33,43 @@ public class CommunicationClient extends Communication {
             String res = page.toString();
             System.out.println("Client: message reçu");
             if (rep.getReponse(res)) {
-                String header = rep.get_header();
-                System.out.println(header);
+                if(rep.reponse_valide()){
+                    String header = rep.get_header();
+                    System.out.println("Client: " + rep.getRequest());
 
-                /*On récupère le répertoire courant*/
-                String repertoire = System.getProperty("user.dir");
-                String nomFichierFinal;
-                //String repertoire = this.PATH;
-                /*On vérifie si l'on doit sélectionner l'index ou non*/
-                if (nom_fichier.equals(new String("/"))) {
-                    nomFichierFinal = repertoire + "\\Client\\index.html";
-                } else {
-                    nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
+                    /*On récupère le répertoire courant*/
+                    String repertoire = System.getProperty("user.dir");
+                    String nomFichierFinal;
+                    //String repertoire = this.PATH;
+                    /*On vérifie si l'on doit sélectionner l'index ou non*/
+                    if (nom_fichier.equals(new String("/"))) {
+                        nomFichierFinal = repertoire + "\\Client\\index.html";
+                    } else {
+                        nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
+                    }
+
+                    /*On enregistre la data dans un fichier*/
+                    FileWriter writer = new FileWriter(nomFichierFinal, false);
+                    writer.write(rep.getContent());
+
+                    if (writer != null) {
+                        writer.close();
+                    }
+
+                    File f = new File(nomFichierFinal);
+                    return f;
                 }
-
-                /*On enregistre la data dans un fichier*/
-                FileWriter writer = new FileWriter(nomFichierFinal, false);
-                writer.write(rep.getContent());
-
-                if (writer != null) {
-                    writer.close();
+                else{
+                    String repertoire = System.getProperty("user.dir");
+                    return new File(repertoire + "\\Client\\404.html");
                 }
-
-                File f = new File(nomFichierFinal);
-                return f;
             }
+            else{
+                    String repertoire = System.getProperty("user.dir");
+                    return new File(repertoire + "\\Client\\404.html");
+                }
         } catch (IOException ex) {
             throw new ErreurClient("Erreur dans la lecture du flux " + ex.getMessage());
         }
-        return null;
     }
 }
