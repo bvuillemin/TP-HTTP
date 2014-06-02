@@ -28,6 +28,7 @@ public class CommunicationServeur extends Communication implements Runnable {
             this.out.write(rep.getRequest().getBytes());
             this.out.flush();
         } catch (IOException ex) {
+            sendReponse(new Reponse (500, "SERVER INTERNAL ERROR", null));
             throw new ErreurServeur (500, "Impossible d'envoyer la réponse");
         }
     }
@@ -47,7 +48,6 @@ public class CommunicationServeur extends Communication implements Runnable {
     
     public void comServeur() throws ErreurServeur {
         byte[] b = new byte[2048];
-        while (fonctionnement){
             try {
                 this.in = this.s.getInputStream();
                 BufferedInputStream bi = new BufferedInputStream(this.in);
@@ -59,16 +59,17 @@ public class CommunicationServeur extends Communication implements Runnable {
                     traiter (res);
                 }
                 if (read == - 1) {
+                    sendReponse(new Reponse (500, "SERVER INTERNAL ERROR", null));
                     throw new ErreurServeur(500, "Erreur dans la lecture du flux 1");
                 }
             }catch(ErreurServeur er){
                 throw er;
             } 
             catch (IOException ex) {
+                sendReponse(new Reponse (500, "SERVER INTERNAL ERROR", null));
                 throw new ErreurServeur(500, "Erreur dans la lecture du flux 2");
             }
-                
-        }
+          
     }
 
     private void envoyerFichier(String nomFichier) throws ErreurServeur {
@@ -78,9 +79,9 @@ public class CommunicationServeur extends Communication implements Runnable {
         String repertoire = System.getProperty("user.dir");
         /*On vérifie si l'on doit sélectionner l'index ou non*/
         if (nomFichier.equals(new String("\\"))) {
-            nomFichierFinal = repertoire + "Server\\index.html";
+            nomFichierFinal = repertoire + "\\Server\\index.html";
         } else {
-            nomFichierFinal = repertoire + "\\" + nomFichier;
+            nomFichierFinal = repertoire + "\\Server\\" + nomFichier;
         }
         
         //nomFichierFinal = "C:\\Users\\Pierre\\index.html";
@@ -109,6 +110,7 @@ public class CommunicationServeur extends Communication implements Runnable {
         }
         catch (IOException ex) { 
             System.out.println(ex.toString());
+            sendReponse(new Reponse (500, "SERVER INTERNAL ERROR", null));
             throw new ErreurServeur(500,"Erreur dans l'envoi");
         } 
     }

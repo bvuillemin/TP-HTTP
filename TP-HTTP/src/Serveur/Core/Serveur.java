@@ -34,7 +34,7 @@ public class Serveur {
         try {
             while(this.fonctionnementServeur){
                 connexion = socket.accept();
-                connexion.setSoTimeout(30000);
+                connexion.setSoTimeout(3000);
                 CommunicationServeur com = new CommunicationServeur(connexion);
                 com.run();
             }
