@@ -15,7 +15,7 @@ public class CommunicationServeur extends Communication implements Runnable {
 
     private Socket s;
     private final String PATH = "";
-    private boolean fonctionnement;
+    private boolean fonctionnement=true;
 
     public CommunicationServeur(Socket s1) throws Erreur {
         super();
@@ -59,13 +59,13 @@ public class CommunicationServeur extends Communication implements Runnable {
                     traiter (res);
                 }
                 if (read == - 1) {
-                    throw new ErreurServeur(500, "Erreur dans la lecture du flux");
+                    throw new ErreurServeur(500, "Erreur dans la lecture du flux 1");
                 }
             }catch(ErreurServeur er){
                 throw er;
             } 
             catch (IOException ex) {
-                throw new ErreurServeur(500, "Erreur dans la lecture du flux");
+                throw new ErreurServeur(500, "Erreur dans la lecture du flux 2");
             }
                 
         }
@@ -95,6 +95,10 @@ public class CommunicationServeur extends Communication implements Runnable {
             while (br.available() != 0) {
                 page.append((char)br.read());
             }
+            sendReponse(new Reponse(200, "OK", page.toString())); 
+        }
+        catch(ErreurServeur er){
+            throw er;
         }catch(FileNotFoundException ex){
             sendReponse(new Reponse (404, "FILE NOT FOUND", null));
             throw new ErreurServeur(404,"File requested not found : " + nomFichierFinal);
@@ -106,13 +110,7 @@ public class CommunicationServeur extends Communication implements Runnable {
         catch (IOException ex) { 
             System.out.println(ex.toString());
             throw new ErreurServeur(500,"Erreur dans l'envoi");
-        }     
-        try{
-            sendReponse(new Reponse(200, "OK", page.toString()));
-        }
-        catch(ErreurServeur er){
-            throw er;
-        }
+        } 
     }
     
     
@@ -122,7 +120,7 @@ public class CommunicationServeur extends Communication implements Runnable {
             this.fonctionnement=true;
             this.comServeur();
         } catch (ErreurServeur ex) {
-
+            System.out.println(ex.getMessage());
         }
     }
 }

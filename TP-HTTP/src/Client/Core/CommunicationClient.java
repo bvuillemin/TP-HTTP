@@ -20,24 +20,24 @@ public class CommunicationClient extends Communication {
             byte[] b = new byte[2048];
             Reponse rep = new Reponse();
             BufferedInputStream bi = new BufferedInputStream(this.in);
-            
+
             StringBuilder page = new StringBuilder("");
-            
+
             /*On va transférer chaque information du fichier vers un string que l'on pourra envoyer*/
             while (bi.available() != 0) {
-                page.append((char)bi.read());
+                page.append((char) bi.read());
             }
-            
+
             String res = page.toString();
             System.out.println("Client: message reçu");
             if (rep.getReponse(res)) {
                 /*On récupère le répertoire courant*/
                 String repertoire = System.getProperty("user.dir");
                 String nomFichierFinal;
-                if(rep.reponse_valide()){
+                if (rep.reponse_valide()) {
                     String header = rep.get_header();
                     System.out.println(header);
-    
+
                     //String repertoire = this.PATH;
                     /*On vérifie si l'on doit sélectionner l'index ou non*/
                     if (nom_fichier.equals(new String("/"))) {
@@ -45,26 +45,24 @@ public class CommunicationClient extends Communication {
                     } else {
                         nomFichierFinal = repertoire + "\\Client\\" + nom_fichier;
                     }
-    
+
                     /*On enregistre la data dans un fichier*/
                     FileWriter writer = new FileWriter(nomFichierFinal, false);
                     writer.write(rep.getContent());
-    
+
                     if (writer != null) {
                         writer.close();
                     }
+                } else {
+                    nomFichierFinal = repertoire + "\\Client\\" + rep.getCode() + ".html";
                 }
-                else{
-                    String codeErreur = new String(this.code);
-                    nomFichierFinal = repertoire + "\\Client\\" + codeErreur + ".html";
-                }
-    
+
                 File f = new File(nomFichierFinal);
                 return f;
-                }
             }
+
         } catch (IOException ex) {
-            throw new ErreurClient(400,"Erreur dans la lecture du flux " + ex.getMessage());
+            throw new ErreurClient(400, "Erreur dans la lecture du flux " + ex.getMessage());
         }
         return null;
     }
