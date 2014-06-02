@@ -31,13 +31,13 @@ public class CommunicationClient extends Communication {
             String res = page.toString();
             System.out.println("Client: message reçu");
             if (rep.getReponse(res)) {
+                /*On récupère le répertoire courant*/
+                String repertoire = System.getProperty("user.dir");
+                String nomFichierFinal;
                 if(rep.reponse_valide()){
                     String header = rep.get_header();
                     System.out.println(header);
     
-                    /*On récupère le répertoire courant*/
-                    String repertoire = System.getProperty("user.dir");
-                    String nomFichierFinal;
                     //String repertoire = this.PATH;
                     /*On vérifie si l'on doit sélectionner l'index ou non*/
                     if (nom_fichier.equals(new String("/"))) {
@@ -53,9 +53,13 @@ public class CommunicationClient extends Communication {
                     if (writer != null) {
                         writer.close();
                     }
+                }
+                else{
+                    nomFichierFinal = repertoire + "\\Client\\404.html";
+                }
     
-                    File f = new File(nomFichierFinal);
-                    return f;
+                File f = new File(nomFichierFinal);
+                return f;
                 }
             }
         } catch (IOException ex) {
