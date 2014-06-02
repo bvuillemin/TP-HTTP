@@ -89,7 +89,7 @@ public class Reponse extends Requete{
     }
     
     public boolean reponse_valide(){
-        return ( code == 200 && message=="OK");
+        return ( code == 200 && message.equals(new String("OK")));
     }
 
     @Override
