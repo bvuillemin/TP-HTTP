@@ -45,10 +45,13 @@ public class CommunicationServeur extends Communication implements Runnable {
 
     public void comServeur() throws ErreurServeur {
         byte[] b = new byte[2048];
-        while (true) {
+        try {
+            this.in = this.s.getInputStream();
+        } catch (IOException ex) {
+            throw new ErreurServeur(500,"Erreur récupération stream");
+        }
+        while (fonctionnement) {
             try {
-
-                this.in = this.s.getInputStream();
                 BufferedInputStream bi = new BufferedInputStream(this.in);
                 StringBuilder page = new StringBuilder("");
                 if (bi.available() != 0) {
@@ -58,6 +61,9 @@ public class CommunicationServeur extends Communication implements Runnable {
                     String res = page.toString();
                     System.out.println(res);
                     traiter(res);
+                }
+                if (s==null){
+                    fonctionnement=false;
                 }
             } catch (ErreurServeur er) {
                 System.out.println(er.toString());

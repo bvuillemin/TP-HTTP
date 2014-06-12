@@ -10,6 +10,7 @@ public class Client {
 
     public CommunicationClient com;
     public URL url;
+    public String lastDomain="";
     public File file;
     
     /**
@@ -20,10 +21,12 @@ public class Client {
     public void lancerRequete(URL _url) throws ErreurClient {
         url = _url;
         try {
-            this.com = new CommunicationClient(InetAddress.getLocalHost(), 1086);
+            if (!lastDomain.equals(url.getHost())){
+                this.com = new CommunicationClient(getIPDNS(url), 1086);
+                lastDomain = url.getHost();
+            }
+            
         } catch (Erreur ex) {
-            throw new ErreurClient(400,ex.getMessage());
-        } catch (UnknownHostException ex) {
             throw new ErreurClient(400,ex.getMessage());
         }
         
@@ -42,6 +45,26 @@ public class Client {
         } catch (IOException ex) {
             System.out.println(ex.toString());
             throw new ErreurClient(400,"Erreur dans l'envoi");
+        }
+    }
+    
+    public void close (){
+        if (com!=null){
+            com.close();
+        }
+    }
+    
+    public InetAddress getIPDNS (URL url) throws ErreurClient{
+        String domain=url.getHost();
+        try {
+        if (domain.equals("www.lol.net")||domain.equals("localhost")){
+                return InetAddress.getLocalHost();
+        }
+        else {
+            return InetAddress.getByName(domain);
+        }
+        } catch (UnknownHostException ex) {
+            throw new ErreurClient (666,"Domaine non reconnu");
         }
     }
 }

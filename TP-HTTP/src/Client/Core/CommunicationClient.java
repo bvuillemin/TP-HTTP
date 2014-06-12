@@ -14,7 +14,7 @@ public class CommunicationClient extends Communication {
     public CommunicationClient(InetAddress _ip, int _port) throws ErreurClient, Erreur {
         super(_ip, _port);
     }
-
+    
     public File attente_fichier(String nom_fichier) throws ErreurClient {
         try {
             byte[] b = new byte[2048];

@@ -4,6 +4,7 @@ import HTTP.Erreur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class Serveur {
     private int portEcoute;
@@ -38,7 +39,9 @@ public class Serveur {
                 CommunicationServeur com = new CommunicationServeur(connexion);
                 com.run();
             }
-        } 
+        } catch(SocketTimeoutException s){
+            throw new ErreurServeur(500, "Timeout");
+        }
         catch (IOException ex) {
             throw new ErreurServeur(500, "Erreur ouverture connexion");
         } catch (Erreur ex) {
