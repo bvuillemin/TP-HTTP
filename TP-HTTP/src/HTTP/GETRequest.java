@@ -60,4 +60,11 @@ public class GETRequest extends Requete{
     public String getFileName(){
         return file.toString();
     }
+    
+    @Override
+    public String toString() {
+        return "GET Request : " + NL +
+                " GET "+ file.toString()+GAP+ VERSION + NL +
+                " Accept : "+ TYPE + NL + NL;
+    }
 }

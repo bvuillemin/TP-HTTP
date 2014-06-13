@@ -22,12 +22,13 @@ public class Client {
         url = _url;
         try {
             if (!lastDomain.equals(url.getHost())){
-                this.com = new CommunicationClient(getIPDNS(url), 1086);
+                InetAddress address= getIPDNS(url);
+                this.com = new CommunicationClient(address, 1086);
                 lastDomain = url.getHost();
             }
             
         } catch (Erreur ex) {
-            throw new ErreurClient(400,ex.getMessage());
+            throw (ErreurClient) ex;
         }
         
         String fileName=url.getFile();
@@ -44,27 +45,22 @@ public class Client {
             file = this.com.attente_fichier(fileName);
         } catch (IOException ex) {
             System.out.println(ex.toString());
-            throw new ErreurClient(400,"Erreur dans l'envoi");
-        }
-    }
-    
-    public void close (){
-        if (com!=null){
-            com.close();
+            throw new ErreurClient(500,"Erreur dans l'envoi");
         }
     }
     
     public InetAddress getIPDNS (URL url) throws ErreurClient{
         String domain=url.getHost();
         try {
-        if (domain.equals("www.lol.net")||domain.equals("localhost")){
+        if (domain.equals("www.tp-ARAR.net")||domain.equals("localhost")){
                 return InetAddress.getLocalHost();
         }
         else {
+            domain=domain.replaceAll("www.","");
             return InetAddress.getByName(domain);
         }
         } catch (UnknownHostException ex) {
-            throw new ErreurClient (666,"Domaine non reconnu");
+            throw new ErreurClient (500,"Domaine non reconnu");
         }
     }
 }

@@ -5,13 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class Communication{
     protected InputStream in;
     protected OutputStream out;
-    private Socket socket;
+    protected Socket socket;
     private InetAddress adresseIP;
     private int port;
     
@@ -23,7 +21,7 @@ public abstract class Communication{
             this.out = this.socket.getOutputStream();
             this.in = this.socket.getInputStream();
         } catch (IOException ex) {
-            throw new Erreur(500,"Erreur dans la communication");
+            throw new Erreur(500,"Erreur dans la création du socket");
         }
     }
     
@@ -33,14 +31,6 @@ public abstract class Communication{
     public String requeteGET(String url, String method){
         String res = "GET " + url + " " + method;
         return res;
-    }
-    
-    public void close () {
-        try {
-            socket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Communication.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public InputStream getIn() {

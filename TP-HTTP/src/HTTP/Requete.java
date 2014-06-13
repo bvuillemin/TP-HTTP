@@ -11,6 +11,7 @@ public abstract class Requete {
     public static final String TYPE = "text/html";
     public static final String GAP = " ";
     public static final String NL = "\n";
+    public static final String CLOSE = "Connection: close";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz");
     
     public String getRequest (){
@@ -40,7 +41,7 @@ public abstract class Requete {
         try {
             return DATE_FORMAT.parse(temp);
         } catch (ParseException ex) {
-            //Date inconvertible
+            System.out.println("Problème convertion date");
             return null;
         }
     }

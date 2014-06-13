@@ -37,33 +37,39 @@ public class CommunicationClient extends Communication {
                 /*On récupère le répertoire courant*/
                 String repertoire = System.getProperty("user.dir");
                 String nomFichierFinal;
-                    String header = rep.get_header();
-                    System.out.println(header);
+                String header = rep.get_header();
+                System.out.println(header);
 
-                    //String repertoire = this.PATH;
-                    /*On vérifie si l'on doit sélectionner l'index ou non*/
-                    if (nom_fichier.equals(new String("/"))) {
-                        nomFichierFinal = repertoire + "\\Client\\index.html";
-                    } else {
-                        nomFichierFinal = repertoire + "\\Client\\" + rep.getCode();
-                    }
+                /*On vérifie si l'on doit sélectionner l'index ou non*/
+                if (nom_fichier.equals(new String("/"))) {
+                    nomFichierFinal = repertoire + "\\Client\\index.html";
+                } else {
+                    nomFichierFinal = repertoire + "\\Client\\" + rep.getCode()+".html";
+                }
 
-                    /*On enregistre la data dans un fichier*/
-                    FileWriter writer = new FileWriter(nomFichierFinal, false);
-                    writer.write(rep.getContent());
+                /*On enregistre la data dans un fichier*/
+                FileWriter writer = new FileWriter(nomFichierFinal, false);
+                writer.write(rep.getContent());
 
-                    if (writer != null) {
-                        writer.close();
-                    }
+                if (writer != null) {
+                    writer.close();
+                }
+                
+                //Si demande de déconnection du serveur
+                if (rep.isClose()){
+                    socket.close();
+                }
+                
                 File f = new File(nomFichierFinal);
                 return f;
             }
             else{
+                socket.close();
                 throw new ErreurClient(400, "Message reçu non traité");
             }
 
         } catch (IOException ex) {
-            throw new ErreurClient(400, "Erreur dans la lecture du flux " + ex.getMessage());
+            throw new ErreurClient(500, "Problème de socket " + ex.getMessage());
         }
     }
 }

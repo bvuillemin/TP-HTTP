@@ -47,7 +47,7 @@ public class Navigateur extends javax.swing.JFrame implements Observer{
         jEditorPane1.setText("");
         jScrollPane1.setViewportView(jEditorPane1);
 
-        jTextField1.setText("http://www.lol.net/");
+        jTextField1.setText("http://www.tp-ARAR.net/");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -114,7 +114,6 @@ public class Navigateur extends javax.swing.JFrame implements Observer{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        client.close();
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 

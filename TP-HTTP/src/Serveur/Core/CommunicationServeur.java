@@ -9,16 +9,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+
 
 public class CommunicationServeur extends Communication implements Runnable {
 
-    private Socket s;
-    private final String PATH = "";
     private boolean fonctionnement = true;
 
     public CommunicationServeur(Socket s1) throws Erreur {
         super();
-        this.s = s1;
+        this.socket = s1;
+        try {
+            socket.setSoTimeout(3000);
+        } catch (SocketException ex) {
+            throw new Erreur(500, "Impossible de modifier le timeout");
+        }
     }
 
     protected void sendReponse(Reponse rep) throws ErreurServeur {
@@ -26,7 +32,6 @@ public class CommunicationServeur extends Communication implements Runnable {
             this.out.write(rep.getRequest().getBytes());
             this.out.flush();
         } catch (IOException ex) {
-            sendReponse(Reponse.Erreur(500, "SERVER_INTERNAL_ERROR"));
             throw new ErreurServeur(500, "Impossible d'envoyer la réponse");
         }
     }
@@ -34,19 +39,20 @@ public class CommunicationServeur extends Communication implements Runnable {
     public void traiter(String res) throws ErreurServeur {
         GETRequest request = new GETRequest();
         if (request.getGETRequest(res)) {
-            System.out.println("Paquet GET reçu");
+            System.out.println("Packet GET reçu");
+            System.out.println(request.toString());
             String nomFichier = request.getFileName();
             envoyerFichier(nomFichier);
         } else {
-            sendReponse(Reponse.Erreur(400, "UNTREATED"));
-            throw new ErreurServeur(400, "Le packet reçu n'est pas correct ou non traité");
+            sendReponse(Reponse.Erreur(400, "UNTREATED",false));
+            System.out.println(new ErreurServeur(400, "Le packet reçu n'est pas correct ou non traité").toString());
         }
     }
 
     public void comServeur() throws ErreurServeur {
         byte[] b = new byte[2048];
         try {
-            this.in = this.s.getInputStream();
+            this.in = this.socket.getInputStream();
         } catch (IOException ex) {
             throw new ErreurServeur(500,"Erreur récupération stream");
         }
@@ -62,14 +68,17 @@ public class CommunicationServeur extends Communication implements Runnable {
                     System.out.println(res);
                     traiter(res);
                 }
-                if (s==null){
+                if (socket.isClosed()){
                     fonctionnement=false;
                 }
             } catch (ErreurServeur er) {
-                System.out.println(er.toString());
-            } catch (IOException ex) {
-                sendReponse(Reponse.Erreur(500, "SERVER_INTERNAL_ERROR"));
-                throw new ErreurServeur(500, "Erreur dans la lecture du flux 2");
+                throw er;
+            }catch (SocketTimeoutException ste) {
+                throw new ErreurServeur(118,"Connection timed out");
+            } 
+            catch (IOException ex) {
+                if (!socket.isClosed())sendReponse(Reponse.Erreur(500, "SERVER_INTERNAL_ERROR",true));
+                throw new ErreurServeur(500, "Erreur dans la lecture du flux");
             }
         }
 
@@ -84,13 +93,13 @@ public class CommunicationServeur extends Communication implements Runnable {
         if (nomFichier.equals(new String("\\"))) {
             nomFichierFinal = repertoire + "\\Server\\index.html";
         } else {
-            nomFichierFinal = repertoire + "\\Server" + nomFichier + ".html";
+            nomFichierFinal = repertoire + "\\Server" + nomFichier;
         }
 
         //nomFichierFinal = "C:\\Users\\Pierre\\index.html";
         StringBuilder page = new StringBuilder("");
         try {
-            this.out = this.s.getOutputStream();
+            this.out = this.socket.getOutputStream();
             FileInputStream fe = new FileInputStream(nomFichierFinal);
             BufferedInputStream br = new BufferedInputStream(fe);
 
@@ -98,18 +107,18 @@ public class CommunicationServeur extends Communication implements Runnable {
             while (br.available() != 0) {
                 page.append((char) br.read());
             }
-            sendReponse(new Reponse(200, "OK", page.toString()));
+            sendReponse(new Reponse(200, "OK", page.toString(),false));
         } catch (ErreurServeur er) {
             throw er;
         } catch (FileNotFoundException ex) {
-            sendReponse(Reponse.Erreur(404, "FILE_NOT_FOUND"));
-            throw new ErreurServeur(404, "File requested not found");
+            sendReponse(Reponse.Erreur(404, "FILE_NOT_FOUND",false));
+            System.out.println(new ErreurServeur(404, "File requested not found").toString());
         } catch (SecurityException ex) {
-            sendReponse(Reponse.Erreur(403, "FORBIDDEN"));
-            throw new ErreurServeur(403, "File requested forbidden to read");
+            sendReponse(Reponse.Erreur(403, "FORBIDDEN",false));
+            System.out.println(new ErreurServeur(403, "File requested forbidden to read").toString());
         } catch (IOException ex) {
             System.out.println(ex.toString());
-            sendReponse(Reponse.Erreur(500, "SERVER_INTERNAL_ERROR"));
+            if (!socket.isClosed())sendReponse(Reponse.Erreur(500, "SERVER_INTERNAL_ERROR",true));
             throw new ErreurServeur(500, "Erreur dans l'envoi");
         }
     }
@@ -120,7 +129,8 @@ public class CommunicationServeur extends Communication implements Runnable {
             this.fonctionnement = true;
             this.comServeur();
         } catch (ErreurServeur ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Erreur serveur: "+ ex.getMessage());
+            
         }
     }
 }

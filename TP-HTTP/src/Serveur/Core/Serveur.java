@@ -4,7 +4,6 @@ import HTTP.Erreur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 
 public class Serveur {
     private int portEcoute;
@@ -31,17 +30,14 @@ public class Serveur {
     }
     
     public void ecoute() throws ErreurServeur{
-        Socket connexion = null;
+        Socket connection = null;
         try {
             while(this.fonctionnementServeur){
-                connexion = socket.accept();
-                connexion.setSoTimeout(3000);
-                CommunicationServeur com = new CommunicationServeur(connexion);
-                com.run();
+                connection = socket.accept();
+                Thread com = new Thread (new CommunicationServeur(connection));
+                com.start();
             }
-        } catch(SocketTimeoutException s){
-            throw new ErreurServeur(500, "Timeout");
-        }
+        } 
         catch (IOException ex) {
             throw new ErreurServeur(500, "Erreur ouverture connexion");
         } catch (Erreur ex) {
@@ -49,8 +45,8 @@ public class Serveur {
         }
         finally{
             try{
-                if(connexion != null)
-                    connexion.close();
+                if(connection != null&&!connection.isClosed())
+                    connection.close();
             }
             catch(IOException ex){
                 throw new ErreurServeur(500, "Erreur fermeture connexion");

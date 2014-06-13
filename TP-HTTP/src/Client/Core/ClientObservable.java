@@ -16,9 +16,7 @@ public class ClientObservable extends Observable {
         client.lancerRequete(url);
         updateObservers();
     }
-    public void close (){
-        client.close();
-    }
+    
     private void updateObservers() {
         setChanged();
         notifyObservers();
