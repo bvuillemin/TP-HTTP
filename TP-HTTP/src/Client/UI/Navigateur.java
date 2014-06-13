@@ -1,7 +1,7 @@
 package Client.UI;
 
 import Client.Core.ClientObservable;
-import Client.Core.ErreurClient;
+import HTTP.Erreur;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -108,7 +108,7 @@ public class Navigateur extends javax.swing.JFrame implements Observer{
              
         } catch (MalformedURLException ex) {
             System.out.println("Client : mauvaise URL");
-        } catch (ErreurClient ex) {
+        } catch (Erreur ex) {
                 System.out.println("Client: " + ex.getMessage());
             }
     }//GEN-LAST:event_jButton1ActionPerformed

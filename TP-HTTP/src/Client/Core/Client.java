@@ -18,7 +18,7 @@ public class Client {
      * @param url
      * @throws ErreurClient 
      */
-    public void lancerRequete(URL _url) throws ErreurClient {
+    public void lancerRequete(URL _url) throws Erreur {
         url = _url;
         try {
             if (!lastDomain.equals(url.getHost())){
@@ -28,7 +28,7 @@ public class Client {
             }
             
         } catch (Erreur ex) {
-            throw (ErreurClient) ex;
+            throw ex;
         }
         
         String fileName=url.getFile();
